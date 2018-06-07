@@ -5,6 +5,11 @@
     <title>Title</title>
 </head>
 <body>
+<div id="container"></div>
+
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
+<script src="http://threejs.org/build/three.min.js"></script>
 
 <script id="vertexShader" type="x-shader/x-verex">
     varying vec2 vUv;
@@ -30,6 +35,39 @@
 
     void main() {
 
+    }
+</script>
+
+<script>
+    var container;
+    var camera, scene, renderer;
+    var uniforms;
+    var mouse = { x: 0, y: 0};
+    var loader = new THREE.TextureLoader();
+    document.onmousemove = getMouseXY;
+
+    init();
+    animate();
+    function getMouseXY(e) {
+        mouse.x = e.pageX;
+        mouse.y = e.pageY;
+        uniforms.u_mouse.value.x = mouse.x;
+        uniforms.u_mouse.value.y = mouse.y;
+    }
+    function init() {
+        container = document.getElementById('container');
+
+        camera = new THREE.Camera();
+        camera.position.z = 1;
+        var geometry = new THREE.PlaneBufferGeometry(2, 2);
+
+
+        uniforms = {
+            u_time: {type: 'f', value: 1.0},
+            u_animation: {type: 'f', value: 0.0},
+            u_mouse: {type: 'v2', value: new THREE.Vector2()},
+            u_resolution: {type: 'v2', value: new THREE.Vector2()},
+        }
     }
 </script>
 

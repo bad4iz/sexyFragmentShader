@@ -24,6 +24,7 @@
         vUv.y = vUv.y / scaley;
         g1_Position = vec4(position, 1.0)
     }
+
 </script>
 
 <script id="fragmentShader" type="x-shader/x-fragment">
@@ -36,24 +37,27 @@
     void main() {
 
     }
+
 </script>
 
 <script>
     var container;
     var camera, scene, renderer;
     var uniforms;
-    var mouse = { x: 0, y: 0};
+    var mouse = {x: 0, y: 0};
     var loader = new THREE.TextureLoader();
     document.onmousemove = getMouseXY;
 
     init();
     animate();
+
     function getMouseXY(e) {
         mouse.x = e.pageX;
         mouse.y = e.pageY;
         uniforms.u_mouse.value.x = mouse.x;
         uniforms.u_mouse.value.y = mouse.y;
     }
+
     function init() {
         container = document.getElementById('container');
 
@@ -66,9 +70,32 @@
             u_time: {type: 'f', value: 1.0},
             u_animation: {type: 'f', value: 0.0},
             u_mouse: {type: 'v2', value: new THREE.Vector2()},
-            u_resolution: {type: 'v2', value: new THREE.Vector2()},
-        }
+            u_resolution: {type: 'v2', value: new THREE.Vector2()}
+
+
+        };
+
+        var material = new THREE.ShaderMaterial( {
+            uniforms: uniforms,
+            vertexShader: document.getElementById('verteShader').textContent,
+            fragmentShader: document.getElementById('fragmentShader')
+        });
+
+        var mesh = new THREE.Mesh( geometry, material);
+        scene.add(mesh);
+        rendere = new THREE.WebGLRenderer();
+        renderer.setPixelRatio( window.devicePixelRatio);
+
+        container.appendChild( renderer.domElement);
+        onWindowResize();
+        window.addEventListener( 'resize', onWindowResize, false);
+
     }
+    function onWindowResize(enent) {
+        renderer.setSize( window.innerWidth, window.innerHeight);
+        uniforms.u_resolution.value.x = renderer.domElement.
+    }
+
 </script>
 
 </body>

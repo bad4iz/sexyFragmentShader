@@ -63,6 +63,7 @@
 
         camera = new THREE.Camera();
         camera.position.z = 1;
+        scene = new THREE.Scene();
         var geometry = new THREE.PlaneBufferGeometry(2, 2);
 
 
@@ -71,19 +72,17 @@
             u_animation: {type: 'f', value: 0.0},
             u_mouse: {type: 'v2', value: new THREE.Vector2()},
             u_resolution: {type: 'v2', value: new THREE.Vector2()}
-
-
         };
 
         var material = new THREE.ShaderMaterial( {
             uniforms: uniforms,
-            vertexShader: document.getElementById('verteShader').textContent,
-            fragmentShader: document.getElementById('fragmentShader')
+            vertexShader: document.getElementById('vertexShader').textContent,
+            fragmentShader: document.getElementById('fragmentShader').textContent
         });
 
         var mesh = new THREE.Mesh( geometry, material);
         scene.add(mesh);
-        rendere = new THREE.WebGLRenderer();
+        renderer = new THREE.WebGLRenderer();
         renderer.setPixelRatio( window.devicePixelRatio);
 
         container.appendChild( renderer.domElement);
@@ -93,9 +92,21 @@
     }
     function onWindowResize(enent) {
         renderer.setSize( window.innerWidth, window.innerHeight);
-        uniforms.u_resolution.value.x = renderer.domElement.
+        uniforms.u_resolution.value.x = renderer.domElement.width;
+        uniforms.u_resolution.value.y = renderer.domElement.height;
+        uniforms.u_mouse.value.x =  mouse.x;
+        uniforms.u_mouse.value.y =  mouse.y;
     }
 
+    function animate() {
+        requestAnimationFrame( animate );
+        render();
+    }
+
+    function render() {
+        uniforms.u_time.value += 0.05;
+        renderer.render( scene, camera )
+    }
 </script>
 
 </body>

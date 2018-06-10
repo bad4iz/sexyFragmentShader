@@ -17,9 +17,9 @@
     uniform vec2 u_resolution;
 
     void main() {
-        vUv = (position.xy + 1.0) * 0.3;
-        float scalex = u_size.x / (u_resolution.x);
-        float scaley = u_size.y / (u_resolution.y);
+        vUv = (position.xy + .9) * 1.9;
+        float scalex = u_size.x/(u_resolution.x);
+        float scaley = u_size.y/u_resolution.y;
         vUv.x = vUv.x / scalex;
         vUv.y = vUv.y / scaley;
         gl_Position = vec4(position, 1.0);
@@ -36,12 +36,15 @@
 
     void main() {
         vec4 texture = texture2D(texture, vUv);
-        gl_FragColor = vec4(abs(sin(u_time)), abs(cos(u_time)), 0.0, 1.0);
+
+        // <!--gl_FragColor = vec4(abs(sin(u_time)), abs(cos(u_time)), 0.0, 1.0);-->
+        gl_FragColor = texture;
     }
 
 </script>
 
 <script>
+
     var container;
     var camera, scene, renderer;
     var uniforms;
@@ -49,8 +52,12 @@
     var loader = new THREE.TextureLoader();
     document.onmousemove = getMouseXY;
 
-    init();
-    animate();
+    var MyTexture = loader.load('foto.jpg', () => {
+        init();
+        animate();
+    });
+
+
 
     function getMouseXY(e) {
         mouse.x = e.pageX;
@@ -68,11 +75,14 @@
         var geometry = new THREE.PlaneBufferGeometry(2, 2);
 
 
+
         uniforms = {
             u_time: {type: 'f', value: 1.0},
             u_animation: {type: 'f', value: 0.0},
             u_mouse: {type: 'v2', value: new THREE.Vector2()},
-            u_resolution: {type: 'v2', value: new THREE.Vector2()}
+            u_resolution: {type: 'v2', value: new THREE.Vector2()},
+            u_size: {type:"v2",value: new THREE.Vector2(MyTexture.image.width,MyTexture.image.height) },
+            texture: {value: MyTexture },
         };
 
         var material = new THREE.ShaderMaterial( {

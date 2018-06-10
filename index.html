@@ -22,7 +22,7 @@
         float scaley = u_size.y / (u_resolution.y);
         vUv.x = vUv.x / scalex;
         vUv.y = vUv.y / scaley;
-        g1_Position = vec4(position, 1.0)
+        gl_Position = vec4(position, 1.0);
     }
 
 </script>
@@ -35,7 +35,8 @@
     uniform sampler2D texture;
 
     void main() {
-
+        vec4 texture = texture2D(texture, vUv);
+        gl_FragColor = vec4(abs(sin(u_time)), abs(cos(u_time)), 0.0, 1.0);
     }
 
 </script>

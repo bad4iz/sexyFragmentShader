@@ -35,10 +35,12 @@
     uniform sampler2D texture;
 
     void main() {
-        vec4 texture = texture2D(texture, vUv);
+        float distort = cos(vUv.x * 100.0 + u_time) * 0.003;
+        float distort2 = sin(vUv.x * 100.0 + u_time) * 0.003;
+        vec4 color = texture2D(texture, vec2(vUv.x + distort, vUv.y + distort2));
 
         // <!--gl_FragColor = vec4(abs(sin(u_time)), abs(cos(u_time)), 0.0, 1.0);-->
-        gl_FragColor = vec4(texture.g, texture.r, .0, 1.0);
+        gl_FragColor = vec4(color.rgb, 1.0);
     }
 
 </script>

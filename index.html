@@ -17,7 +17,7 @@
     uniform vec2 u_resolution;
 
     void main() {
-        vUv = (position.xy + .9) * 1.9;
+        vUv = (position.xy + 1.) * 1.9;
         float scalex = u_size.x/(u_resolution.x);
         float scaley = u_size.y/u_resolution.y;
         vUv.x = vUv.x / scalex;
@@ -38,7 +38,7 @@
         vec4 texture = texture2D(texture, vUv);
 
         // <!--gl_FragColor = vec4(abs(sin(u_time)), abs(cos(u_time)), 0.0, 1.0);-->
-        gl_FragColor = texture;
+        gl_FragColor = vec4(texture.g, texture.r, .0, 1.0);
     }
 
 </script>
